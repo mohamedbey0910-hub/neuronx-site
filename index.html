@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NeuronX — Automatisation Python &amp; Bots Telegram</title>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg-soft: #12121a;
+    --line: #232330;
+    --text: #e8e8f0;
+    --text-dim: #8a8a9c;
+    --accent-1: #7c5cff;
+    --accent-2: #3ddc97;
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* Background grid texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(124, 92, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124, 92, 255, 0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+    mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 40%, transparent 100%);
+  }
+
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(10, 10, 15, 0.75);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+  }
+  .logo {
+    font-weight: 800;
+    font-size: 1.3rem;
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .logo .x {
+    background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  nav ul {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+  nav a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  nav a:hover, nav a:focus-visible { color: var(--text); }
+  nav a:focus-visible { outline: 2px solid var(--accent-1); outline-offset: 4px; border-radius: 4px; }
+
+  .nav-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: var(--accent-1);
+    color: #fff;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124, 92, 255, 0.35); }
+
+  @media (max-width: 760px) {
+    nav ul { display: none; }
+  }
+
+  /* HERO */
+  .hero {
+    padding: 120px 0 100px;
+    text-align: left;
+  }
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    color: var(--accent-2);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 8px; height: 8px;
+    background: var(--accent-2);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--accent-2);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+  }
+
+  .hero h1 {
+    font-size: clamp(2.4rem, 6vw, 4.4rem);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    max-width: 11ch;
+  }
+  .hero h1 .grad {
+    background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hero p {
+    margin-top: 28px;
+    font-size: 1.15rem;
+    color: var(--text-dim);
+    max-width: 46ch;
+  }
+  .hero-actions {
+    margin-top: 40px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    padding: 14px 28px;
+    background: linear-gradient(135deg, var(--accent-1), #9b7bff);
+    color: #fff;
+    border-radius: 10px;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(124, 92, 255, 0.4); }
+  .btn-secondary {
+    padding: 14px 28px;
+    border: 1px solid var(--line);
+    color: var(--text);
+    border-radius: 10px;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .btn-secondary:hover { border-color: var(--accent-1); background: rgba(124, 92, 255, 0.06); }
+
+  /* TERMINAL DEMO */
+  .terminal {
+    margin-top: 64px;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+    max-width: 620px;
+    box-shadow: 0 30px 80px -20px rgba(124, 92, 255, 0.18);
+  }
+  .terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .terminal-bar span {
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    background: #3a3a48;
+  }
+  .terminal-bar .label {
+    margin-left: 8px;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--text-dim);
+  }
+  .terminal-body {
+    padding: 22px 20px;
+    font-family: var(--mono);
+    font-size: 0.86rem;
+  }
+  .terminal-body .line { margin-bottom: 10px; display: flex; gap: 10px; }
+  .terminal-body .me { color: var(--accent-2); }
+  .terminal-body .bot { color: var(--text-dim); }
+  .terminal-body .bubble {
+    background: rgba(124, 92, 255, 0.1);
+    border: 1px solid rgba(124, 92, 255, 0.2);
+    padding: 10px 14px;
+    border-radius: 8px;
+    color: var(--text);
+    display: inline-block;
+  }
+  .terminal-body .prompt { color: var(--accent-1); font-weight: 700; }
+
+  /* SECTIONS */
+  section { padding: 90px 0; border-top: 1px solid var(--line); }
+  .section-eyebrow {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--accent-1);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    max-width: 20ch;
+  }
+  .section-sub {
+    margin-top: 14px;
+    color: var(--text-dim);
+    max-width: 56ch;
+    font-size: 1.02rem;
+  }
+
+  /* SERVICES GRID */
+  .services-grid {
+    margin-top: 56px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  @media (max-width: 800px) {
+    .services-grid { grid-template-columns: 1fr; }
+  }
+  .service-card {
+    background: var(--bg-soft);
+    padding: 32px 28px;
+    transition: background 0.2s;
+  }
+  .service-card:hover { background: #16161f; }
+  .service-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    background: rgba(124, 92, 255, 0.12);
+    border: 1px solid rgba(124, 92, 255, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 22px;
+    font-size: 1.3rem;
+  }
+  .service-card h3 {
+    font-size: 1.12rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .service-card p {
+    color: var(--text-dim);
+    font-size: 0.92rem;
+  }
+  .service-tag {
+    display: inline-block;
+    margin-top: 18px;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--accent-2);
+    border: 1px solid rgba(61, 220, 151, 0.3);
+    background: rgba(61, 220, 151, 0.06);
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+
+  /* PROCESS */
+  .process-list {
+    margin-top: 56px;
+    display: flex;
+    flex-direction: column;
+  }
+  .process-item {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 28px;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: start;
+  }
+  .process-item:last-child { border-bottom: none; }
+  .process-num {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--accent-1);
+    padding-top: 4px;
+  }
+  .process-item h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .process-item p {
+    color: var(--text-dim);
+    max-width: 56ch;
+  }
+
+  /* PRICING */
+  .pricing-grid {
+    margin-top: 56px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 800px) {
+    .pricing-grid { grid-template-columns: 1fr; }
+  }
+  .price-card {
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 32px 28px;
+    background: var(--bg-soft);
+    display: flex;
+    flex-direction: column;
+  }
+  .price-card.featured {
+    border-color: var(--accent-1);
+    background: linear-gradient(160deg, rgba(124, 92, 255, 0.1), var(--bg-soft) 60%);
+    position: relative;
+  }
+  .price-card.featured::before {
+    content: 'Le plus demandé';
+    position: absolute;
+    top: -12px;
+    left: 28px;
+    background: var(--accent-1);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 6px;
+    letter-spacing: 0.04em;
+  }
+  .price-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .price-card .price {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin: 12px 0 4px;
+    font-family: var(--mono);
+  }
+  .price-card .price span {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+  }
+  .price-card ul {
+    list-style: none;
+    margin: 24px 0;
+    flex-grow: 1;
+  }
+  .price-card li {
+    padding: 8px 0;
+    color: var(--text-dim);
+    font-size: 0.92rem;
+    display: flex;
+    gap: 10px;
+  }
+  .price-card li::before {
+    content: '→';
+    color: var(--accent-2);
+    flex-shrink: 0;
+  }
+
+  /* CONTACT */
+  .contact-box {
+    margin-top: 56px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(124, 92, 255, 0.08), rgba(61, 220, 151, 0.04));
+    padding: 56px 48px;
+    text-align: center;
+  }
+  @media (max-width: 600px) {
+    .contact-box { padding: 40px 24px; }
+  }
+  .contact-box h2 {
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    font-weight: 800;
+    margin-bottom: 16px;
+  }
+  .contact-box p {
+    color: var(--text-dim);
+    max-width: 50ch;
+    margin: 0 auto 32px;
+  }
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 40px 0;
+  }
+  footer .wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  footer p {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+  }
+  .footer-social {
+    display: flex;
+    gap: 20px;
+  }
+  .footer-social a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.2s;
+  }
+  .footer-social a:hover, .footer-social a:focus-visible { color: var(--text); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-eyebrow::before { animation: none; }
+    html { scroll-behavior: auto; }
+  }
+
+  /* CHAT WIDGET */
+  .chat-toggle {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-1), #9b7bff);
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(124, 92, 255, 0.4);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+  }
+  .chat-toggle:hover { transform: scale(1.06); }
+  .chat-toggle:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 3px; }
+
+  .chat-window {
+    position: fixed;
+    bottom: 96px;
+    right: 24px;
+    width: 360px;
+    max-width: calc(100vw - 32px);
+    height: 480px;
+    max-height: calc(100vh - 140px);
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: 0 30px 80px -10px rgba(0,0,0,0.6);
+    z-index: 100;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .chat-window.open { display: flex; }
+
+  .chat-header {
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .chat-header .dot {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--accent-2);
+    box-shadow: 0 0 10px var(--accent-2);
+  }
+  .chat-header h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+  .chat-header p {
+    font-size: 0.74rem;
+    color: var(--text-dim);
+    font-family: var(--mono);
+  }
+
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .msg {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    max-width: 85%;
+    padding: 10px 13px;
+    border-radius: 10px;
+  }
+  .msg.bot {
+    background: rgba(124, 92, 255, 0.1);
+    border: 1px solid rgba(124, 92, 255, 0.2);
+    align-self: flex-start;
+    border-bottom-left-radius: 2px;
+  }
+  .msg.user {
+    background: var(--accent-1);
+    color: #fff;
+    align-self: flex-end;
+    border-bottom-right-radius: 2px;
+  }
+  .msg.typing {
+    color: var(--text-dim);
+    font-family: var(--mono);
+    font-size: 0.8rem;
+  }
+
+  .chat-input-row {
+    border-top: 1px solid var(--line);
+    padding: 12px;
+    display: flex;
+    gap: 8px;
+  }
+  .chat-input-row input {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: var(--text);
+    font-size: 0.88rem;
+    font-family: inherit;
+  }
+  .chat-input-row input:focus { outline: 2px solid var(--accent-1); outline-offset: 1px; }
+  .chat-input-row button {
+    background: var(--accent-1);
+    border: none;
+    color: #fff;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 0.88rem;
+  }
+  .chat-input-row button:disabled { opacity: 0.5; cursor: default; }
+  .chat-input-row button:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">NEURON<span class="x">X</span></div>
+    <ul>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#process">Méthode</a></li>
+      <li><a href="#pricing">Tarifs</a></li>
+    </ul>
+    <a class="nav-cta" href="#contact">Parler de votre projet</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-eyebrow">Disponible pour de nouveaux projets</div>
+    <h1>On automatise les <span class="grad">tâches répétitives</span> de votre business.</h1>
+    <p>NeuronX conçoit des bots Telegram et des scripts Python sur mesure pour les PME et indépendants : notifications, réponses automatiques, gestion de données. Moins de temps perdu, plus de temps pour votre activité.</p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="#contact">Demander un devis</a>
+      <a class="btn-secondary" href="#services">Voir les services</a>
+    </div>
+
+    <div class="terminal">
+      <div class="terminal-bar">
+        <span></span><span></span><span></span>
+        <div class="label">telegram — NeuronX Assistant</div>
+      </div>
+      <div class="terminal-body">
+        <div class="line"><span class="prompt">→</span><span class="bot">Salut ! Je suis NeuronX Assistant. Pose-moi une question 🤖</span></div>
+        <div class="line"><span class="me">vous</span><span class="bubble">Préviens-moi quand un nouveau client remplit le formulaire</span></div>
+        <div class="line"><span class="prompt">→</span><span class="bot">C'est noté. Je t'envoie une notification ici dès qu'une réponse arrive.</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="services">
+  <div class="wrap">
+    <div class="section-eyebrow">Services</div>
+    <h2 class="section-title">Trois façons de vous faire gagner du temps</h2>
+    <p class="section-sub">Chaque solution est construite sur mesure à partir de vos outils et de vos process actuels — pas de logiciel standard à réapprendre.</p>
+
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">🤖</div>
+        <h3>Bots Telegram</h3>
+        <p>Un assistant qui répond à vos clients, prend des commandes ou envoie des rappels, directement dans Telegram — disponible 24h/24.</p>
+        <span class="service-tag">Sur mesure</span>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">⚙️</div>
+        <h3>Scripts d'automatisation</h3>
+        <p>Tri de fichiers, export de données, envoi d'emails programmés : on automatise les tâches manuelles qui vous prennent un temps précieux chaque semaine.</p>
+        <span class="service-tag">Python</span>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🔧</div>
+        <h3>Maintenance &amp; suivi</h3>
+        <p>Une fois en place, on ajuste, on corrige et on fait évoluer votre outil au fil de vos besoins — sans repartir de zéro.</p>
+        <span class="service-tag">Continu</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="process">
+  <div class="wrap">
+    <div class="section-eyebrow">Méthode</div>
+    <h2 class="section-title">Comment se déroule un projet</h2>
+    <p class="section-sub">Quatre étapes simples, du premier message jusqu'à la mise en service.</p>
+
+    <div class="process-list">
+      <div class="process-item">
+        <div class="process-num">01</div>
+        <div>
+          <h3>On clarifie le besoin</h3>
+          <p>Un échange rapide pour comprendre votre tâche la plus chronophage et ce que devrait faire l'outil au quotidien.</p>
+        </div>
+      </div>
+      <div class="process-item">
+        <div class="process-num">02</div>
+        <div>
+          <h3>Proposition &amp; devis</h3>
+          <p>Vous recevez un périmètre clair, un prix fixe et un délai de réalisation — sans surprise par la suite.</p>
+        </div>
+      </div>
+      <div class="process-item">
+        <div class="process-num">03</div>
+        <div>
+          <h3>Développement</h3>
+          <p>On construit et on teste l'outil avec des points d'étape réguliers, pour ajuster en cours de route si besoin.</p>
+        </div>
+      </div>
+      <div class="process-item">
+        <div class="process-num">04</div>
+        <div>
+          <h3>Mise en service &amp; suivi</h3>
+          <p>L'outil est déployé et opérationnel. On reste disponible pour les ajustements et la maintenance.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="section-eyebrow">Tarifs</div>
+    <h2 class="section-title">Des prix clairs, adaptés à votre besoin</h2>
+    <p class="section-sub">Chaque projet est différent : ces fourchettes donnent un ordre d'idée, le devis final dépend du périmètre exact.</p>
+
+    <div class="pricing-grid">
+      <div class="price-card">
+        <h3>Bot FAQ</h3>
+        <div class="price">100–200<span>€</span></div>
+        <ul>
+          <li>Réponses automatiques aux questions fréquentes</li>
+          <li>Horaires, services, infos pratiques</li>
+          <li>Mise en place sur Telegram</li>
+        </ul>
+        <a class="btn-secondary" href="#contact" style="text-align:center">En discuter</a>
+      </div>
+      <div class="price-card featured">
+        <h3>Bot avec IA</h3>
+        <div class="price">250–450<span>€</span></div>
+        <ul>
+          <li>Réponses intelligentes et personnalisées</li>
+          <li>Connaissance de vos produits et services</li>
+          <li>Ton et personnalité adaptés à votre marque</li>
+          <li>1 mois de support inclus</li>
+        </ul>
+        <a class="btn-primary" href="#contact" style="text-align:center">En discuter</a>
+      </div>
+      <div class="price-card">
+        <h3>Automatisation</h3>
+        <div class="price">100–250<span>€</span></div>
+        <ul>
+          <li>Scripts d'export ou de tri de données</li>
+          <li>Emails ou notifications programmées</li>
+          <li>Connexion à vos outils existants</li>
+        </ul>
+        <a class="btn-secondary" href="#contact" style="text-align:center">En discuter</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-box">
+      <h2>Une tâche répétitive vous fait perdre du temps ?</h2>
+      <p>Décrivez-nous votre besoin, on vous propose une solution simple et un prix clair sous 48h.</p>
+      <div class="contact-links">
+        <a class="btn-primary" href="https://t.me/NeuronXAI_bot" target="_blank" rel="noopener">Contacter sur Telegram</a>
+        <a class="btn-secondary" href="https://www.linkedin.com/" target="_blank" rel="noopener">Voir notre LinkedIn</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>© 2026 NeuronX — Automatisation Python &amp; bots Telegram.</p>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/neuronx.official" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://t.me/NeuronXAI_bot" target="_blank" rel="noopener">Telegram</a>
+    </div>
+  </div>
+</footer>
+
+<!-- CHAT WIDGET -->
+<button class="chat-toggle" id="chatToggle" aria-label="Ouvrir le chat avec NeuronX Assistant">💬</button>
+
+<div class="chat-window" id="chatWindow">
+  <div class="chat-header">
+    <span class="dot"></span>
+    <div>
+      <h4>NeuronX Assistant</h4>
+      <p>répond en quelques secondes</p>
+    </div>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="msg bot">Salut 👋 Une question sur nos services, nos tarifs ou un projet en tête ? Demande-moi !</div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" id="chatInput" placeholder="Écris ton message..." aria-label="Votre message">
+    <button id="chatSend">Envoyer</button>
+  </div>
+</div>
+
+<script>
+  const GROQ_API_KEY = "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";
+
+  const SYSTEM_PROMPT = `Tu es l'assistant virtuel de NeuronX, une entreprise française qui crée des bots Telegram et des scripts d'automatisation Python sur mesure pour les PME et indépendants.
+
+Services et tarifs proposés :
+- Bot FAQ (réponses automatiques aux questions fréquentes, horaires, infos pratiques) : 100-200€
+- Bot avec IA personnalisée (réponses intelligentes adaptées aux produits/services du client, 1 mois de support inclus) : 250-450€
+- Script d'automatisation (export/tri de données, emails ou notifications programmées) : 100-250€
+- Maintenance mensuelle : 20-50€/mois
+
+Méthode de travail : échange pour clarifier le besoin, devis avec prix fixe et délai, développement avec points d'étape, mise en service et suivi.
+
+Réponds toujours en français, de façon chaleureuse, concise (2-4 phrases maximum) et professionnelle. Si la question dépasse ce que tu sais, invite la personne à laisser ses coordonnées via le bouton "Contacter sur Telegram" pour un échange direct avec l'équipe.`;
+
+  const toggle = document.getElementById('chatToggle');
+  const win = document.getElementById('chatWindow');
+  const messages = document.getElementById('chatMessages');
+  const input = document.getElementById('chatInput');
+  const sendBtn = document.getElementById('chatSend');
+
+  let history = [];
+  let isOpen = false;
+
+  toggle.addEventListener('click', () => {
+    isOpen = !isOpen;
+    win.classList.toggle('open', isOpen);
+    toggle.textContent = isOpen ? '✕' : '💬';
+    if (isOpen) input.focus();
+  });
+
+  function addMessage(text, role) {
+    const div = document.createElement('div');
+    div.className = 'msg ' + (role === 'user' ? 'user' : 'bot');
+    div.textContent = text;
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+    return div;
+  }
+
+  async function sendMessage() {
+    const text = input.value.trim();
+    if (!text) return;
+
+    addMessage(text, 'user');
+    history.push({ role: 'user', content: text });
+    input.value = '';
+    sendBtn.disabled = true;
+
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'msg typing';
+    typingDiv.textContent = 'NeuronX Assistant écrit...';
+    messages.appendChild(typingDiv);
+    messages.scrollTop = messages.scrollHeight;
+
+    try {
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + GROQ_API_KEY
+        },
+        body: JSON.stringify({
+          model: 'llama-3.3-70b-versatile',
+          messages: [
+            { role: 'system', content: SYSTEM_PROMPT },
+            ...history
+          ],
+          max_tokens: 300
+        })
+      });
+
+      const data = await response.json();
+      typingDiv.remove();
+
+      if (data.error) {
+        addMessage("Désolé, je rencontre un souci technique. Contacte-nous directement sur Telegram pour une réponse rapide.", 'bot');
+      } else {
+        const reply = data.choices[0].message.content;
+        addMessage(reply, 'bot');
+        history.push({ role: 'assistant', content: reply });
+      }
+    } catch (err) {
+      typingDiv.remove();
+      addMessage("Désolé, je rencontre un souci technique. Contacte-nous directement sur Telegram pour une réponse rapide.", 'bot');
+    }
+
+    sendBtn.disabled = false;
+  }
+
+  sendBtn.addEventListener('click', sendMessage);
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') sendMessage();
+  });
+</script>
+
+</body>
+</html>
