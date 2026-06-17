@@ -39,7 +39,6 @@
   }
   .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
 
-  /* NAV */
   nav {
     position: sticky; top: 0; z-index: 50;
     background: rgba(10, 10, 15, 0.75);
@@ -59,23 +58,17 @@
     padding: 10px 18px; background: var(--accent-1); color: #fff;
     border-radius: 8px; font-weight: 600; font-size: 0.88rem;
     text-decoration: none; transition: transform 0.15s, box-shadow 0.15s;
+    cursor: pointer; border: none;
   }
   .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124, 92, 255, 0.35); }
   @media (max-width: 760px) { nav ul { display: none; } }
 
-  /* SCROLL ANIMATIONS */
-  .fade-in {
-    opacity: 0;
-    transform: translateY(28px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
+  .fade-in { opacity: 0; transform: translateY(28px); transition: opacity 0.6s ease, transform 0.6s ease; }
   .fade-in.visible { opacity: 1; transform: translateY(0); }
   .fade-in-delay-1 { transition-delay: 0.1s; }
   .fade-in-delay-2 { transition-delay: 0.2s; }
   .fade-in-delay-3 { transition-delay: 0.3s; }
-  .fade-in-delay-4 { transition-delay: 0.4s; }
 
-  /* HERO */
   .hero { padding: 120px 0 100px; text-align: left; }
   .hero-eyebrow {
     font-family: var(--mono); font-size: 0.82rem; color: var(--accent-2);
@@ -91,68 +84,29 @@
   }
   @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .hero h1 { font-size: clamp(2.4rem, 6vw, 4.4rem); font-weight: 800; line-height: 1.08; letter-spacing: -0.02em; max-width: 11ch; animation: fadeUp 0.7s ease 0.2s both; }
+  .hero h1 .grad { background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; background-size: 200% 200%; animation: gradShift 4s ease infinite; }
+  @keyframes gradShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+  .hero p { margin-top: 28px; font-size: 1.15rem; color: var(--text-dim); max-width: 46ch; animation: fadeUp 0.7s ease 0.3s both; }
+  .hero-actions { margin-top: 40px; display: flex; gap: 16px; flex-wrap: wrap; animation: fadeUp 0.7s ease 0.4s both; }
 
-  .hero h1 {
-    font-size: clamp(2.4rem, 6vw, 4.4rem); font-weight: 800;
-    line-height: 1.08; letter-spacing: -0.02em; max-width: 11ch;
-    animation: fadeUp 0.7s ease 0.2s both;
-  }
-  .hero h1 .grad {
-    background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-    background-size: 200% 200%;
-    animation: gradShift 4s ease infinite;
-  }
-  @keyframes gradShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-  .hero p {
-    margin-top: 28px; font-size: 1.15rem; color: var(--text-dim); max-width: 46ch;
-    animation: fadeUp 0.7s ease 0.3s both;
-  }
-  .hero-actions {
-    margin-top: 40px; display: flex; gap: 16px; flex-wrap: wrap;
-    animation: fadeUp 0.7s ease 0.4s both;
-  }
   .btn-primary {
-    padding: 14px 28px;
-    background: linear-gradient(135deg, var(--accent-1), #9b7bff);
-    color: #fff; border-radius: 10px; font-weight: 700;
-    text-decoration: none; font-size: 0.95rem;
-    transition: transform 0.15s, box-shadow 0.15s;
-    position: relative; overflow: hidden;
+    padding: 14px 28px; background: linear-gradient(135deg, var(--accent-1), #9b7bff);
+    color: #fff; border-radius: 10px; font-weight: 700; text-decoration: none; font-size: 0.95rem;
+    transition: transform 0.15s, box-shadow 0.15s; position: relative; overflow: hidden;
+    cursor: pointer; border: none; display: inline-flex; align-items: center;
   }
-  .btn-primary::after {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(135deg, transparent 30%, rgba(255,255,255,0.15) 50%, transparent 70%);
-    transform: translateX(-100%);
-    transition: transform 0.4s ease;
-  }
-  .btn-primary:hover::after { transform: translateX(100%); }
   .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(124, 92, 255, 0.4); }
   .btn-secondary {
-    padding: 14px 28px; border: 1px solid var(--line);
-    color: var(--text); border-radius: 10px; font-weight: 600;
-    text-decoration: none; font-size: 0.95rem;
-    transition: border-color 0.15s, background 0.15s;
+    padding: 14px 28px; border: 1px solid var(--line); color: var(--text); border-radius: 10px;
+    font-weight: 600; text-decoration: none; font-size: 0.95rem;
+    transition: border-color 0.15s, background 0.15s; cursor: pointer; background: transparent;
+    display: inline-flex; align-items: center;
   }
   .btn-secondary:hover { border-color: var(--accent-1); background: rgba(124, 92, 255, 0.06); }
 
-  /* TERMINAL */
-  .terminal {
-    margin-top: 64px;
-    background: var(--bg-soft);
-    border: 1px solid var(--line);
-    border-radius: 14px; overflow: hidden; max-width: 620px;
-    box-shadow: 0 30px 80px -20px rgba(124, 92, 255, 0.18);
-    animation: fadeUp 0.7s ease 0.5s both;
-  }
-  .terminal-bar {
-    display: flex; align-items: center; gap: 8px;
-    padding: 12px 16px; border-bottom: 1px solid var(--line);
-  }
+  .terminal { margin-top: 64px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; max-width: 620px; box-shadow: 0 30px 80px -20px rgba(124, 92, 255, 0.18); animation: fadeUp 0.7s ease 0.5s both; }
+  .terminal-bar { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--line); }
   .terminal-bar span { width: 11px; height: 11px; border-radius: 50%; background: #3a3a48; }
   .terminal-bar .label { margin-left: 8px; font-family: var(--mono); font-size: 0.78rem; color: var(--text-dim); }
   .terminal-body { padding: 22px 20px; font-family: var(--mono); font-size: 0.86rem; }
@@ -161,105 +115,37 @@
   @keyframes lineAppear { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: translateX(0); } }
   .terminal-body .me { color: var(--accent-2); }
   .terminal-body .bot { color: var(--text-dim); }
-  .terminal-body .bubble {
-    background: rgba(124, 92, 255, 0.1);
-    border: 1px solid rgba(124, 92, 255, 0.2);
-    padding: 10px 14px; border-radius: 8px; color: var(--text); display: inline-block;
-  }
+  .terminal-body .bubble { background: rgba(124, 92, 255, 0.1); border: 1px solid rgba(124, 92, 255, 0.2); padding: 10px 14px; border-radius: 8px; color: var(--text); display: inline-block; }
   .terminal-body .prompt { color: var(--accent-1); font-weight: 700; }
 
-  /* SECTIONS */
   section { padding: 90px 0; border-top: 1px solid var(--line); }
   .section-eyebrow { font-family: var(--mono); font-size: 0.78rem; color: var(--accent-1); text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 14px; }
   .section-title { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; letter-spacing: -0.01em; max-width: 20ch; }
   .section-sub { margin-top: 14px; color: var(--text-dim); max-width: 56ch; font-size: 1.02rem; }
 
-  /* SERVICES GRID */
-  .services-grid {
-    margin-top: 56px;
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 1px; background: var(--line);
-    border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
-  }
+  .services-grid { margin-top: 56px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
   @media (max-width: 800px) { .services-grid { grid-template-columns: 1fr; } }
-  .service-card {
-    background: var(--bg-soft); padding: 32px 28px;
-    transition: background 0.2s, transform 0.2s;
-    position: relative; overflow: hidden;
-  }
-  .service-card::before {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(124,92,255,0.08), transparent);
-    opacity: 0; transition: opacity 0.3s;
-  }
-  .service-card:hover { background: #16161f; transform: translateY(-2px); }
-  .service-card:hover::before { opacity: 1; }
-  .service-icon {
-    width: 44px; height: 44px; border-radius: 10px;
-    background: rgba(124, 92, 255, 0.12);
-    border: 1px solid rgba(124, 92, 255, 0.25);
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 22px; font-size: 1.3rem;
-    transition: transform 0.3s, box-shadow 0.3s;
-  }
-  .service-card:hover .service-icon {
-    transform: scale(1.1) rotate(-5deg);
-    box-shadow: 0 8px 24px rgba(124,92,255,0.25);
-  }
+  .service-card { background: var(--bg-soft); padding: 32px 28px; transition: background 0.2s; position: relative; overflow: hidden; }
+  .service-card:hover { background: #16161f; }
+  .service-icon { width: 44px; height: 44px; border-radius: 10px; background: rgba(124, 92, 255, 0.12); border: 1px solid rgba(124, 92, 255, 0.25); display: flex; align-items: center; justify-content: center; margin-bottom: 22px; font-size: 1.3rem; }
   .service-card h3 { font-size: 1.12rem; font-weight: 700; margin-bottom: 10px; }
   .service-card p { color: var(--text-dim); font-size: 0.92rem; }
-  .service-tag {
-    display: inline-block; margin-top: 18px; font-family: var(--mono); font-size: 0.78rem;
-    color: var(--accent-2); border: 1px solid rgba(61, 220, 151, 0.3);
-    background: rgba(61, 220, 151, 0.06); padding: 4px 10px; border-radius: 6px;
-  }
+  .service-tag { display: inline-block; margin-top: 18px; font-family: var(--mono); font-size: 0.78rem; color: var(--accent-2); border: 1px solid rgba(61, 220, 151, 0.3); background: rgba(61, 220, 151, 0.06); padding: 4px 10px; border-radius: 6px; }
 
-  /* PROCESS */
   .process-list { margin-top: 56px; display: flex; flex-direction: column; }
-  .process-item {
-    display: grid; grid-template-columns: 90px 1fr; gap: 28px;
-    padding: 32px 0; border-bottom: 1px solid var(--line); align-items: start;
-    transition: padding-left 0.3s;
-  }
+  .process-item { display: grid; grid-template-columns: 90px 1fr; gap: 28px; padding: 32px 0; border-bottom: 1px solid var(--line); align-items: start; transition: padding-left 0.3s; }
   .process-item:last-child { border-bottom: none; }
   .process-item:hover { padding-left: 8px; }
   .process-num { font-family: var(--mono); font-size: 0.85rem; color: var(--accent-1); padding-top: 4px; }
   .process-item h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 8px; }
   .process-item p { color: var(--text-dim); max-width: 56ch; }
 
-  /* COUNTER */
-  .stats-row {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
-    background: var(--line); border: 1px solid var(--line);
-    border-radius: 14px; overflow: hidden; margin-top: 56px;
-  }
-  .stat-card { background: var(--bg-soft); padding: 28px 24px; text-align: center; }
-  .stat-num {
-    font-family: var(--mono); font-size: 2rem; font-weight: 800;
-    background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-  }
-  .stat-label { font-size: 0.85rem; color: var(--text-dim); margin-top: 4px; }
-
-  /* PRICING */
   .pricing-grid { margin-top: 56px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
   @media (max-width: 800px) { .pricing-grid { grid-template-columns: 1fr; } }
-  .price-card {
-    border: 1px solid var(--line); border-radius: 14px; padding: 32px 28px;
-    background: var(--bg-soft); display: flex; flex-direction: column;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
+  .price-card { border: 1px solid var(--line); border-radius: 14px; padding: 32px 28px; background: var(--bg-soft); display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; }
   .price-card:hover { transform: translateY(-4px); box-shadow: 0 20px 50px -10px rgba(124,92,255,0.2); }
-  .price-card.featured {
-    border-color: var(--accent-1);
-    background: linear-gradient(160deg, rgba(124, 92, 255, 0.1), var(--bg-soft) 60%);
-    position: relative;
-  }
-  .price-card.featured::before {
-    content: 'Le plus demandé'; position: absolute; top: -12px; left: 28px;
-    background: var(--accent-1); color: #fff; font-size: 0.7rem; font-weight: 700;
-    padding: 4px 12px; border-radius: 6px; letter-spacing: 0.04em;
-  }
+  .price-card.featured { border-color: var(--accent-1); background: linear-gradient(160deg, rgba(124, 92, 255, 0.1), var(--bg-soft) 60%); position: relative; }
+  .price-card.featured::before { content: 'Le plus demandé'; position: absolute; top: -12px; left: 28px; background: var(--accent-1); color: #fff; font-size: 0.7rem; font-weight: 700; padding: 4px 12px; border-radius: 6px; }
   .price-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
   .price-card .price { font-size: 2.2rem; font-weight: 800; margin: 12px 0 4px; font-family: var(--mono); }
   .price-card .price span { font-size: 0.95rem; color: var(--text-dim); font-weight: 500; font-family: 'Inter', sans-serif; }
@@ -267,36 +153,12 @@
   .price-card li { padding: 8px 0; color: var(--text-dim); font-size: 0.92rem; display: flex; gap: 10px; }
   .price-card li::before { content: '→'; color: var(--accent-2); flex-shrink: 0; }
 
-  /* CONTACT */
-  .contact-box {
-    margin-top: 56px; border: 1px solid var(--line); border-radius: 16px;
-    background: linear-gradient(135deg, rgba(124, 92, 255, 0.08), rgba(61, 220, 151, 0.04));
-    padding: 56px 48px; text-align: center; position: relative; overflow: hidden;
-  }
-  .contact-box::before {
-    content: ''; position: absolute;
-    width: 300px; height: 300px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(124,92,255,0.12), transparent 70%);
-    top: -80px; right: -60px;
-    animation: float 6s ease-in-out infinite;
-  }
-  .contact-box::after {
-    content: ''; position: absolute;
-    width: 200px; height: 200px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(61,220,151,0.1), transparent 70%);
-    bottom: -50px; left: -30px;
-    animation: float 8s ease-in-out infinite reverse;
-  }
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
-  }
+  .contact-box { margin-top: 56px; border: 1px solid var(--line); border-radius: 16px; background: linear-gradient(135deg, rgba(124, 92, 255, 0.08), rgba(61, 220, 151, 0.04)); padding: 56px 48px; text-align: center; position: relative; overflow: hidden; }
   .contact-box h2 { font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 800; margin-bottom: 16px; position: relative; z-index: 1; }
   .contact-box p { color: var(--text-dim); max-width: 50ch; margin: 0 auto 32px; position: relative; z-index: 1; }
   .contact-links { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; position: relative; z-index: 1; }
   @media (max-width: 600px) { .contact-box { padding: 40px 24px; } }
 
-  /* FOOTER */
   footer { border-top: 1px solid var(--line); padding: 40px 0; }
   footer .wrap { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
   footer p { color: var(--text-dim); font-size: 0.85rem; }
@@ -304,38 +166,11 @@
   .footer-social a { color: var(--text-dim); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
   .footer-social a:hover { color: var(--text); }
 
-  /* CHAT WIDGET */
-  .chat-toggle {
-    position: fixed; bottom: 24px; right: 24px;
-    width: 58px; height: 58px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent-1), #9b7bff);
-    border: none; color: #fff; font-size: 1.5rem; cursor: pointer;
-    box-shadow: 0 10px 30px rgba(124, 92, 255, 0.4); z-index: 100;
-    display: flex; align-items: center; justify-content: center;
-    transition: transform 0.2s, box-shadow 0.2s;
-    animation: chatBounce 2s ease-in-out 2s 3;
-  }
-  @keyframes chatBounce {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.08); box-shadow: 0 14px 40px rgba(124, 92, 255, 0.5); }
-  }
+  .chat-toggle { position: fixed; bottom: 24px; right: 24px; width: 58px; height: 58px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-1), #9b7bff); border: none; color: #fff; font-size: 1.5rem; cursor: pointer; box-shadow: 0 10px 30px rgba(124, 92, 255, 0.4); z-index: 100; display: flex; align-items: center; justify-content: center; transition: transform 0.2s; }
   .chat-toggle:hover { transform: scale(1.06); }
-  .chat-window {
-    position: fixed; bottom: 96px; right: 24px; width: 360px;
-    max-width: calc(100vw - 32px); height: 480px; max-height: calc(100vh - 140px);
-    background: var(--bg-soft); border: 1px solid var(--line); border-radius: 16px;
-    box-shadow: 0 30px 80px -10px rgba(0,0,0,0.6); z-index: 100;
-    display: none; flex-direction: column; overflow: hidden;
-    transform-origin: bottom right;
-  }
-  .chat-window.open {
-    display: flex;
-    animation: chatOpen 0.25s ease both;
-  }
-  @keyframes chatOpen {
-    from { opacity: 0; transform: scale(0.9) translateY(10px); }
-    to { opacity: 1; transform: scale(1) translateY(0); }
-  }
+  .chat-window { position: fixed; bottom: 96px; right: 24px; width: 360px; max-width: calc(100vw - 32px); height: 480px; max-height: calc(100vh - 140px); background: var(--bg-soft); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 30px 80px -10px rgba(0,0,0,0.6); z-index: 100; display: none; flex-direction: column; overflow: hidden; }
+  .chat-window.open { display: flex; animation: chatOpen 0.25s ease both; }
+  @keyframes chatOpen { from { opacity: 0; transform: scale(0.9) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
   .chat-header { padding: 16px 18px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .chat-header .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent-2); box-shadow: 0 0 10px var(--accent-2); }
   .chat-header h4 { font-size: 0.95rem; font-weight: 700; }
@@ -343,24 +178,129 @@
   .chat-messages { flex: 1; overflow-y: auto; padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; }
   .msg { font-size: 0.88rem; line-height: 1.5; max-width: 85%; padding: 10px 13px; border-radius: 10px; animation: msgIn 0.3s ease both; }
   @keyframes msgIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-  .msg.bot { background: rgba(124, 92, 255, 0.1); border: 1px solid rgba(124, 92, 255, 0.2); align-self: flex-start; border-bottom-left-radius: 2px; }
-  .msg.user { background: var(--accent-1); color: #fff; align-self: flex-end; border-bottom-right-radius: 2px; }
+  .msg.bot { background: rgba(124, 92, 255, 0.1); border: 1px solid rgba(124, 92, 255, 0.2); align-self: flex-start; }
+  .msg.user { background: var(--accent-1); color: #fff; align-self: flex-end; }
   .msg.typing { color: var(--text-dim); font-family: var(--mono); font-size: 0.8rem; }
   .chat-input-row { border-top: 1px solid var(--line); padding: 12px; display: flex; gap: 8px; }
   .chat-input-row input { flex: 1; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; color: var(--text); font-size: 0.88rem; font-family: inherit; }
   .chat-input-row input:focus { outline: 2px solid var(--accent-1); outline-offset: 1px; }
-  .chat-input-row button { background: var(--accent-1); border: none; color: #fff; border-radius: 8px; padding: 10px 16px; font-weight: 700; cursor: pointer; font-size: 0.88rem; transition: transform 0.1s; }
-  .chat-input-row button:hover { transform: scale(1.05); }
-  .chat-input-row button:disabled { opacity: 0.5; cursor: default; transform: none; }
+  .chat-input-row button { background: var(--accent-1); border: none; color: #fff; border-radius: 8px; padding: 10px 16px; font-weight: 700; cursor: pointer; font-size: 0.88rem; }
+  .chat-input-row button:disabled { opacity: 0.5; cursor: default; }
 
-  @media (prefers-reduced-motion: reduce) {
-    .hero-eyebrow::before { animation: none; }
-    html { scroll-behavior: auto; }
-    .fade-in { opacity: 1; transform: none; transition: none; }
+  /* ===== MODAL DEVIS ===== */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,0.78);
+    backdrop-filter: blur(6px);
+    display: none; align-items: center; justify-content: center;
+    padding: 20px;
   }
+  .modal-overlay.open { display: flex; animation: modalFadeIn 0.22s ease both; }
+  @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .modal {
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    width: 100%; max-width: 520px;
+    padding: 40px;
+    position: relative;
+    box-shadow: 0 40px 100px -20px rgba(124,92,255,0.35);
+    animation: modalSlideUp 0.28s ease both;
+  }
+  @keyframes modalSlideUp { from { opacity: 0; transform: translateY(20px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+  .modal-close {
+    position: absolute; top: 16px; right: 16px;
+    background: transparent; border: 1px solid var(--line);
+    color: var(--text-dim); border-radius: 8px;
+    width: 32px; height: 32px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; transition: background 0.2s, color 0.2s;
+  }
+  .modal-close:hover { background: rgba(124,92,255,0.1); color: var(--text); }
+
+  .modal-eyebrow { font-family: var(--mono); font-size: 0.75rem; color: var(--accent-1); text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 10px; }
+  .modal h2 { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 6px; }
+  .modal-sub { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 28px; }
+
+  .form-group { margin-bottom: 18px; }
+  .form-group label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-dim); margin-bottom: 7px; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.08em; }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%; background: var(--bg); border: 1px solid var(--line); border-radius: 10px;
+    padding: 12px 14px; color: var(--text); font-size: 0.92rem; font-family: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s; appearance: none;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    outline: none; border-color: var(--accent-1); box-shadow: 0 0 0 3px rgba(124,92,255,0.15);
+  }
+  .form-group textarea { resize: vertical; min-height: 90px; }
+  .form-group select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a8a9c' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } .modal { padding: 28px 20px; } }
+
+  .btn-submit {
+    width: 100%; padding: 14px;
+    background: linear-gradient(135deg, var(--accent-1), #9b7bff);
+    color: #fff; border: none; border-radius: 10px; font-weight: 700; font-size: 0.95rem;
+    cursor: pointer; margin-top: 8px; transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(124,92,255,0.4); }
+  .btn-submit:disabled { opacity: 0.6; cursor: default; transform: none; }
+
+  .modal-success { display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px 0; }
+  .modal-success.show { display: flex; }
+  .modal-form.hide { display: none; }
+  .success-icon { width: 64px; height: 64px; border-radius: 50%; background: rgba(61,220,151,0.12); border: 1px solid rgba(61,220,151,0.3); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 20px; animation: successPop 0.4s cubic-bezier(0.34,1.56,0.64,1) both; }
+  @keyframes successPop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .modal-success h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: 8px; }
+  .modal-success p { color: var(--text-dim); font-size: 0.9rem; }
 </style>
 </head>
 <body>
+
+<!-- MODAL DEVIS -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal-close" id="modalClose" aria-label="Fermer">✕</button>
+    <div class="modal-form" id="modalForm">
+      <div class="modal-eyebrow">Demande de devis</div>
+      <h2 id="modalTitle">Parlons de votre projet</h2>
+      <p class="modal-sub">Réponse sous 48h, devis gratuit et sans engagement.</p>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="devisNom">Nom</label>
+          <input type="text" id="devisNom" placeholder="Jean Dupont" required>
+        </div>
+        <div class="form-group">
+          <label for="devisEmail">Email</label>
+          <input type="email" id="devisEmail" placeholder="jean@entreprise.fr" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="devisService">Service souhaité</label>
+        <select id="devisService">
+          <option value="">Sélectionner un service...</option>
+          <option value="Bot FAQ (100–200€)">Bot FAQ — 100–200€</option>
+          <option value="Bot avec IA (250–450€)">Bot avec IA — 250–450€</option>
+          <option value="Automatisation Python (100–250€)">Automatisation Python — 100–250€</option>
+          <option value="Maintenance mensuelle (20–50€/mois)">Maintenance mensuelle — 20–50€/mois</option>
+          <option value="Autre">Autre / Je ne sais pas encore</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="devisMessage">Décrivez votre besoin</label>
+        <textarea id="devisMessage" placeholder="Ex : Je veux un bot Telegram qui répond aux questions de mes clients sur mes horaires et mes services..."></textarea>
+      </div>
+      <button class="btn-submit" id="devisSubmit">Envoyer ma demande →</button>
+    </div>
+    <div class="modal-success" id="modalSuccess">
+      <div class="success-icon">✓</div>
+      <h3>Demande envoyée !</h3>
+      <p>On vous recontacte sous 48h avec une proposition sur mesure.</p>
+    </div>
+  </div>
+</div>
 
 <nav>
   <div class="wrap">
@@ -370,7 +310,7 @@
       <li><a href="#process">Méthode</a></li>
       <li><a href="#pricing">Tarifs</a></li>
     </ul>
-    <a class="nav-cta" href="#contact">Parler de votre projet</a>
+    <button class="nav-cta open-modal">Parler de votre projet</button>
   </div>
 </nav>
 
@@ -380,15 +320,12 @@
     <h1>On automatise les <span class="grad">tâches répétitives</span> de votre business.</h1>
     <p>NeuronX conçoit des bots Telegram et des scripts Python sur mesure pour les PME et indépendants : notifications, réponses automatiques, gestion de données. Moins de temps perdu, plus de temps pour votre activité.</p>
     <div class="hero-actions">
-      <a class="btn-primary" href="#contact">Demander un devis</a>
+      <button class="btn-primary open-modal">Demander un devis</button>
       <a class="btn-secondary" href="#services">Voir les services</a>
     </div>
     <div class="terminal">
-      <div class="terminal-bar">
-        <span></span><span></span><span></span>
-        <div class="label">telegram — NeuronX Assistant</div>
-      </div>
-      <div class="terminal-body" id="terminalBody">
+      <div class="terminal-bar"><span></span><span></span><span></span><div class="label">telegram — NeuronX Assistant</div></div>
+      <div class="terminal-body">
         <div class="line" id="tl1"><span class="prompt">→</span><span class="bot">Salut ! Je suis NeuronX Assistant. Pose-moi une question 🤖</span></div>
         <div class="line" id="tl2"><span class="me">vous</span><span class="bubble">Préviens-moi quand un nouveau client remplit le formulaire</span></div>
         <div class="line" id="tl3"><span class="prompt">→</span><span class="bot">C'est noté. Je t'envoie une notification ici dès qu'une réponse arrive.</span></div>
@@ -403,24 +340,9 @@
     <h2 class="section-title fade-in fade-in-delay-1">Trois façons de vous faire gagner du temps</h2>
     <p class="section-sub fade-in fade-in-delay-2">Chaque solution est construite sur mesure à partir de vos outils et de vos process actuels — pas de logiciel standard à réapprendre.</p>
     <div class="services-grid fade-in fade-in-delay-3">
-      <div class="service-card">
-        <div class="service-icon">🤖</div>
-        <h3>Bots Telegram</h3>
-        <p>Un assistant qui répond à vos clients, prend des commandes ou envoie des rappels, directement dans Telegram — disponible 24h/24.</p>
-        <span class="service-tag">Sur mesure</span>
-      </div>
-      <div class="service-card">
-        <div class="service-icon">⚙️</div>
-        <h3>Scripts d'automatisation</h3>
-        <p>Tri de fichiers, export de données, envoi d'emails programmés : on automatise les tâches manuelles qui vous prennent un temps précieux chaque semaine.</p>
-        <span class="service-tag">Python</span>
-      </div>
-      <div class="service-card">
-        <div class="service-icon">🔧</div>
-        <h3>Maintenance &amp; suivi</h3>
-        <p>Une fois en place, on ajuste, on corrige et on fait évoluer votre outil au fil de vos besoins — sans repartir de zéro.</p>
-        <span class="service-tag">Continu</span>
-      </div>
+      <div class="service-card"><div class="service-icon">🤖</div><h3>Bots Telegram</h3><p>Un assistant qui répond à vos clients, prend des commandes ou envoie des rappels, directement dans Telegram — disponible 24h/24.</p><span class="service-tag">Sur mesure</span></div>
+      <div class="service-card"><div class="service-icon">⚙️</div><h3>Scripts d'automatisation</h3><p>Tri de fichiers, export de données, envoi d'emails programmés : on automatise les tâches manuelles qui vous prennent un temps précieux chaque semaine.</p><span class="service-tag">Python</span></div>
+      <div class="service-card"><div class="service-icon">🔧</div><h3>Maintenance &amp; suivi</h3><p>Une fois en place, on ajuste, on corrige et on fait évoluer votre outil au fil de vos besoins — sans repartir de zéro.</p><span class="service-tag">Continu</span></div>
     </div>
   </div>
 </section>
@@ -431,22 +353,10 @@
     <h2 class="section-title fade-in fade-in-delay-1">Comment se déroule un projet</h2>
     <p class="section-sub fade-in fade-in-delay-2">Quatre étapes simples, du premier message jusqu'à la mise en service.</p>
     <div class="process-list">
-      <div class="process-item fade-in">
-        <div class="process-num">01</div>
-        <div><h3>On clarifie le besoin</h3><p>Un échange rapide pour comprendre votre tâche la plus chronophage et ce que devrait faire l'outil au quotidien.</p></div>
-      </div>
-      <div class="process-item fade-in fade-in-delay-1">
-        <div class="process-num">02</div>
-        <div><h3>Proposition &amp; devis</h3><p>Vous recevez un périmètre clair, un prix fixe et un délai de réalisation — sans surprise par la suite.</p></div>
-      </div>
-      <div class="process-item fade-in fade-in-delay-2">
-        <div class="process-num">03</div>
-        <div><h3>Développement</h3><p>On construit et on teste l'outil avec des points d'étape réguliers, pour ajuster en cours de route si besoin.</p></div>
-      </div>
-      <div class="process-item fade-in fade-in-delay-3">
-        <div class="process-num">04</div>
-        <div><h3>Mise en service &amp; suivi</h3><p>L'outil est déployé et opérationnel. On reste disponible pour les ajustements et la maintenance.</p></div>
-      </div>
+      <div class="process-item fade-in"><div class="process-num">01</div><div><h3>On clarifie le besoin</h3><p>Un échange rapide pour comprendre votre tâche la plus chronophage et ce que devrait faire l'outil au quotidien.</p></div></div>
+      <div class="process-item fade-in fade-in-delay-1"><div class="process-num">02</div><div><h3>Proposition &amp; devis</h3><p>Vous recevez un périmètre clair, un prix fixe et un délai de réalisation — sans surprise par la suite.</p></div></div>
+      <div class="process-item fade-in fade-in-delay-2"><div class="process-num">03</div><div><h3>Développement</h3><p>On construit et on teste l'outil avec des points d'étape réguliers, pour ajuster en cours de route si besoin.</p></div></div>
+      <div class="process-item fade-in fade-in-delay-3"><div class="process-num">04</div><div><h3>Mise en service &amp; suivi</h3><p>L'outil est déployé et opérationnel. On reste disponible pour les ajustements et la maintenance.</p></div></div>
     </div>
   </div>
 </section>
@@ -457,37 +367,9 @@
     <h2 class="section-title fade-in fade-in-delay-1">Des prix clairs, adaptés à votre besoin</h2>
     <p class="section-sub fade-in fade-in-delay-2">Chaque projet est différent : ces fourchettes donnent un ordre d'idée, le devis final dépend du périmètre exact.</p>
     <div class="pricing-grid fade-in fade-in-delay-3">
-      <div class="price-card">
-        <h3>Bot FAQ</h3>
-        <div class="price">100–200<span>€</span></div>
-        <ul>
-          <li>Réponses automatiques aux questions fréquentes</li>
-          <li>Horaires, services, infos pratiques</li>
-          <li>Mise en place sur Telegram</li>
-        </ul>
-        <a class="btn-secondary" href="#contact" style="text-align:center">En discuter</a>
-      </div>
-      <div class="price-card featured">
-        <h3>Bot avec IA</h3>
-        <div class="price">250–450<span>€</span></div>
-        <ul>
-          <li>Réponses intelligentes et personnalisées</li>
-          <li>Connaissance de vos produits et services</li>
-          <li>Ton et personnalité adaptés à votre marque</li>
-          <li>1 mois de support inclus</li>
-        </ul>
-        <a class="btn-primary" href="#contact" style="text-align:center">En discuter</a>
-      </div>
-      <div class="price-card">
-        <h3>Automatisation</h3>
-        <div class="price">100–250<span>€</span></div>
-        <ul>
-          <li>Scripts d'export ou de tri de données</li>
-          <li>Emails ou notifications programmées</li>
-          <li>Connexion à vos outils existants</li>
-        </ul>
-        <a class="btn-secondary" href="#contact" style="text-align:center">En discuter</a>
-      </div>
+      <div class="price-card"><h3>Bot FAQ</h3><div class="price">100–200<span>€</span></div><ul><li>Réponses automatiques aux questions fréquentes</li><li>Horaires, services, infos pratiques</li><li>Mise en place sur Telegram</li></ul><button class="btn-secondary open-modal" style="text-align:center">En discuter</button></div>
+      <div class="price-card featured"><h3>Bot avec IA</h3><div class="price">250–450<span>€</span></div><ul><li>Réponses intelligentes et personnalisées</li><li>Connaissance de vos produits et services</li><li>Ton et personnalité adaptés à votre marque</li><li>1 mois de support inclus</li></ul><button class="btn-primary open-modal" style="text-align:center">En discuter</button></div>
+      <div class="price-card"><h3>Automatisation</h3><div class="price">100–250<span>€</span></div><ul><li>Scripts d'export ou de tri de données</li><li>Emails ou notifications programmées</li><li>Connexion à vos outils existants</li></ul><button class="btn-secondary open-modal" style="text-align:center">En discuter</button></div>
     </div>
   </div>
 </section>
@@ -498,7 +380,7 @@
       <h2>Une tâche répétitive vous fait perdre du temps ?</h2>
       <p>Décrivez-nous votre besoin, on vous propose une solution simple et un prix clair sous 48h.</p>
       <div class="contact-links">
-        <a class="btn-primary" href="https://t.me/NeuronXAI_bot" target="_blank" rel="noopener">Contacter sur Telegram</a>
+        <button class="btn-primary open-modal">Demander un devis</button>
         <a class="btn-secondary" href="https://www.instagram.com/neuronx.official" target="_blank" rel="noopener">Notre Instagram</a>
       </div>
     </div>
@@ -517,13 +399,8 @@
 
 <button class="chat-toggle" id="chatToggle" aria-label="Ouvrir le chat">💬</button>
 <div class="chat-window" id="chatWindow">
-  <div class="chat-header">
-    <span class="dot"></span>
-    <div><h4>NeuronX Assistant</h4><p>répond en quelques secondes</p></div>
-  </div>
-  <div class="chat-messages" id="chatMessages">
-    <div class="msg bot">Salut 👋 Une question sur nos services, nos tarifs ou un projet en tête ? Demande-moi !</div>
-  </div>
+  <div class="chat-header"><span class="dot"></span><div><h4>NeuronX Assistant</h4><p>répond en quelques secondes</p></div></div>
+  <div class="chat-messages" id="chatMessages"><div class="msg bot">Salut 👋 Une question sur nos services, nos tarifs ou un projet en tête ? Demande-moi !</div></div>
   <div class="chat-input-row">
     <input type="text" id="chatInput" placeholder="Écris ton message..." aria-label="Votre message">
     <button id="chatSend">Envoyer</button>
@@ -532,28 +409,64 @@
 
 <script>
   const GROQ_API_KEY = "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";
-  const SYSTEM_PROMPT = `Tu es l'assistant virtuel de NeuronX, une entreprise française qui crée des bots Telegram et des scripts d'automatisation Python sur mesure pour les PME et indépendants.
+  const N8N_WEBHOOK = "https://mohamedbey59100.app.n8n.cloud/form-test/bf0a98fb-9e69-4b0d-b03a-b462ed1c6fa3";
+  const SYSTEM_PROMPT = `Tu es l'assistant virtuel de NeuronX, une entreprise française qui crée des bots Telegram et des scripts d'automatisation Python sur mesure pour les PME et indépendants.\n\nServices et tarifs proposés :\n- Bot FAQ : 100-200€\n- Bot avec IA personnalisée : 250-450€\n- Script d'automatisation : 100-250€\n- Maintenance mensuelle : 20-50€/mois\n\nRéponds toujours en français, de façon chaleureuse, concise (2-4 phrases maximum) et professionnelle.`;
 
-Services et tarifs proposés :
-- Bot FAQ : 100-200€
-- Bot avec IA personnalisée : 250-450€
-- Script d'automatisation : 100-250€
-- Maintenance mensuelle : 20-50€/mois
-
-Réponds toujours en français, de façon chaleureuse, concise (2-4 phrases maximum) et professionnelle.`;
-
-  // Terminal animation
   setTimeout(() => { document.getElementById('tl1').classList.add('show'); }, 800);
   setTimeout(() => { document.getElementById('tl2').classList.add('show'); }, 1600);
   setTimeout(() => { document.getElementById('tl3').classList.add('show'); }, 2400);
 
-  // Scroll reveal
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.12 });
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-  // Chat
+  // MODAL
+  const overlay = document.getElementById('modalOverlay');
+  const modalClose = document.getElementById('modalClose');
+  const modalForm = document.getElementById('modalForm');
+  const modalSuccess = document.getElementById('modalSuccess');
+  const devisSubmit = document.getElementById('devisSubmit');
+
+  function openModal() { overlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
+  function closeModal() { overlay.classList.remove('open'); document.body.style.overflow = ''; }
+
+  document.querySelectorAll('.open-modal').forEach(btn => btn.addEventListener('click', openModal));
+  modalClose.addEventListener('click', closeModal);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+  devisSubmit.addEventListener('click', async () => {
+    const nom = document.getElementById('devisNom').value.trim();
+    const email = document.getElementById('devisEmail').value.trim();
+    const service = document.getElementById('devisService').value;
+    const message = document.getElementById('devisMessage').value.trim();
+    if (!nom || !email) { document.getElementById('devisNom').focus(); return; }
+    devisSubmit.disabled = true;
+    devisSubmit.textContent = 'Envoi en cours...';
+    try {
+      await fetch(N8N_WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nom, email, service, message }),
+        mode: 'no-cors'
+      });
+    } catch(e) {}
+    modalForm.classList.add('hide');
+    modalSuccess.classList.add('show');
+    setTimeout(() => {
+      closeModal();
+      setTimeout(() => {
+        modalForm.classList.remove('hide');
+        modalSuccess.classList.remove('show');
+        devisSubmit.disabled = false;
+        devisSubmit.textContent = 'Envoyer ma demande →';
+        ['devisNom','devisEmail','devisService','devisMessage'].forEach(id => document.getElementById(id).value = '');
+      }, 400);
+    }, 2800);
+  });
+
+  // CHAT
   const toggle = document.getElementById('chatToggle');
   const win = document.getElementById('chatWindow');
   const messages = document.getElementById('chatMessages');
@@ -574,7 +487,6 @@ Réponds toujours en français, de façon chaleureuse, concise (2-4 phrases maxi
     div.textContent = text;
     messages.appendChild(div);
     messages.scrollTop = messages.scrollHeight;
-    return div;
   }
 
   async function sendMessage() {
@@ -598,11 +510,7 @@ Réponds toujours en français, de façon chaleureuse, concise (2-4 phrases maxi
       const data = await response.json();
       typingDiv.remove();
       if (data.error) { addMessage("Désolé, problème technique. Contactez-nous directement sur Telegram.", 'bot'); }
-      else {
-        const reply = data.choices[0].message.content;
-        addMessage(reply, 'bot');
-        history.push({ role: 'assistant', content: reply });
-      }
+      else { const reply = data.choices[0].message.content; addMessage(reply, 'bot'); history.push({ role: 'assistant', content: reply }); }
     } catch { typingDiv.remove(); addMessage("Désolé, problème technique. Contactez-nous directement sur Telegram.", 'bot'); }
     sendBtn.disabled = false;
   }
