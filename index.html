@@ -259,7 +259,7 @@
 
   .nav-actions { display: flex; align-items: center; gap: 12px; }
   .language-switch { display: inline-flex; align-items: center; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 9px; background: var(--bg-soft); }
-  .language-switch button { border: 0; border-radius: 6px; background: transparent; color: var(--text-dim); padding: 6px 8px; font: 700 0.75rem inherit; cursor: pointer; }
+  .language-switch button { border: 0; border-radius: 6px; background: transparent; color: var(--text-dim); padding: 6px 8px; font-family: inherit; font-size: 0.75rem; font-weight: 700; cursor: pointer; }
   .language-switch button[aria-pressed="true"] { background: var(--accent-1); color: #fff; }
   body[data-language="en"] .price-card.featured::before { content: 'Most popular'; }
   @media (max-width: 760px) { .nav-actions { gap: 8px; } .nav-cta { padding: 9px 11px; font-size: 0.78rem; } }
@@ -450,7 +450,7 @@
   "Services": "Services",
   "Méthode": "How it works",
   "Tarifs": "Pricing",
-  "Parler de votre projet": "Discuss your project",
+  "Parler de votre projet": "Talk about your project",
   "Disponible pour de nouveaux projets": "Available for new projects",
   "On automatise les ": "We automate ",
   "tâches répétitives": "repetitive tasks",
@@ -490,7 +490,7 @@
   "Réponses automatiques aux questions fréquentes": "Automatic answers to frequently asked questions",
   "Horaires, services, infos pratiques": "Hours, services, and practical information",
   "Mise en place sur Telegram": "Set up on Telegram",
-  "En discuter": "Discuss your project",
+  "En discuter": "Discuss this service",
   "Bot avec IA": "AI-powered bot",
   "Réponses intelligentes et personnalisées": "Intelligent, personalized replies",
   "Connaissance de vos produits et services": "Knowledge of your products and services",
@@ -516,6 +516,7 @@
   "Votre demande n'a pas pu être envoyée. Réessayez ou contactez-nous sur Telegram.": "We couldn’t send your request. Please try again or contact us on Telegram."
 };
   const reverseTranslations = Object.fromEntries(Object.entries(translations).map(([fr, en]) => [en, fr]));
+  const originalTextNodes = new WeakMap();
   let currentLanguage = 'fr';
 
   function translateValue(value, language) {
@@ -536,14 +537,13 @@
     while ((node = walker.nextNode())) {
       const parent = node.parentElement;
       if (!parent || parent.closest('script, style')) continue;
-      const original = node.nodeValue;
+      if (!originalTextNodes.has(node)) originalTextNodes.set(node, node.nodeValue);
+      const original = originalTextNodes.get(node);
       const trimmed = original.trim();
       const translated = translateValue(trimmed, language);
-      if (translated !== trimmed) {
-        const leading = original.match(/^\s*/)?.[0] || '';
-        const trailing = original.match(/\s*$/)?.[0] || '';
-        node.nodeValue = leading + translated + trailing;
-      }
+      const leading = original.match(/^\s*/)?.[0] || '';
+      const trailing = original.match(/\s*$/)?.[0] || '';
+      node.nodeValue = leading + translated + trailing;
     }
 
     document.querySelectorAll('[placeholder], [aria-label]').forEach(element => {
