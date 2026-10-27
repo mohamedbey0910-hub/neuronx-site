@@ -5,8 +5,19 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed.' });
   }
 
-  const webhookUrl = process.env.N8N_WEBHOOK_URL;
-  if (!webhookUrl) {
+  const appsScriptUrl = process.env.GOOGLE_APPS_SCRIPT_URL;
+  const sharedSecret = process.env.QUOTE_FORWARD_SECRET;
+  if (!appsScriptUrl || !sharedSecret) {
+    return res.status(503).json({ error: 'The quote form is not configured.' });
+  }
+
+  let endpoint;
+  try {
+    endpoint = new URL(appsScriptUrl);
+  } catch (error) {
+    return res.status(503).json({ error: 'The quote form is not configured.' });
+  }
+  if (endpoint.protocol !== 'https:' || endpoint.hostname !== 'script.google.com') {
     return res.status(503).json({ error: 'The quote form is not configured.' });
   }
 
@@ -21,14 +32,20 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const formData = new FormData();
-    formData.append('nom', name);
-    formData.append('email', email);
-    formData.append('service', service);
-    formData.append('message', message);
+    const response = await fetch(endpoint.toString(), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ secret: sharedSecret, name, email, service, message })
+    });
+    const responseText = await response.text();
+    let result;
+    try {
+      result = JSON.parse(responseText);
+    } catch (error) {
+      result = null;
+    }
 
-    const response = await fetch(webhookUrl, { method: 'POST', body: formData });
-    if (!response.ok) {
+    if (!response.ok || !result || result.ok !== true) {
       return res.status(502).json({ error: 'The quote request could not be delivered.' });
     }
 
