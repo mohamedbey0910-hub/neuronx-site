@@ -248,6 +248,7 @@
   .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(124,92,255,0.4); }
   .btn-submit:disabled { opacity: 0.6; cursor: default; transform: none; }
 
+  .modal-error { color: #ff8b8b; font-size: 0.85rem; margin-top: 12px; }
   .modal-success { display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px 0; }
   .modal-success.show { display: flex; }
   .modal-form.hide { display: none; }
@@ -255,6 +256,15 @@
   @keyframes successPop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
   .modal-success h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: 8px; }
   .modal-success p { color: var(--text-dim); font-size: 0.9rem; }
+
+  .nav-actions { display: flex; align-items: center; gap: 12px; }
+  .language-switch { display: inline-flex; align-items: center; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 9px; background: var(--bg-soft); }
+  .language-switch button { border: 0; border-radius: 6px; background: transparent; color: var(--text-dim); padding: 6px 8px; font: 700 0.75rem inherit; cursor: pointer; }
+  .language-switch button[aria-pressed="true"] { background: var(--accent-1); color: #fff; }
+  body[data-language="en"] .price-card.featured::before { content: 'Most popular'; }
+  @media (max-width: 760px) { .nav-actions { gap: 8px; } .nav-cta { padding: 9px 11px; font-size: 0.78rem; } }
+  @media (max-width: 420px) { nav .wrap { padding: 0 14px; } .logo { font-size: 1.08rem; } .nav-actions { gap: 6px; } .nav-cta { padding: 8px 9px; font-size: 0.72rem; } .language-switch button { padding: 5px 6px; } }
+
 </style>
 </head>
 <body>
@@ -293,6 +303,7 @@
         <textarea id="devisMessage" placeholder="Ex : Je veux un bot Telegram qui répond aux questions de mes clients sur mes horaires et mes services..."></textarea>
       </div>
       <button class="btn-submit" id="devisSubmit">Envoyer ma demande →</button>
+      <p id="modalError" class="modal-error" role="alert" style="display:none"></p>
     </div>
     <div class="modal-success" id="modalSuccess">
       <div class="success-icon">✓</div>
@@ -310,7 +321,13 @@
       <li><a href="#process">Méthode</a></li>
       <li><a href="#pricing">Tarifs</a></li>
     </ul>
-    <button class="nav-cta open-modal">Parler de votre projet</button>
+    <div class="nav-actions">
+      <div class="language-switch" role="group" aria-label="Choisir la langue">
+        <button type="button" data-language-option="fr" aria-pressed="true">FR</button>
+        <button type="button" data-language-option="en" aria-pressed="false">EN</button>
+      </div>
+      <button class="nav-cta open-modal">Parler de votre projet</button>
+    </div>
   </div>
 </nav>
 
@@ -408,9 +425,166 @@
 </div>
 
 <script>
-  const GROQ_API_KEY = "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";
-  const N8N_WEBHOOK = "https://mohamedbey59100.app.n8n.cloud/webhook/88bb12c5-104d-4aba-a6b4-13ff2a40d574";
-  const SYSTEM_PROMPT = `Tu es l'assistant virtuel de NeuronX, une entreprise française qui crée des bots Telegram et des scripts d'automatisation Python sur mesure pour les PME et indépendants.\n\nServices et tarifs proposés :\n- Bot FAQ : 100-200€\n- Bot avec IA personnalisée : 250-450€\n- Script d'automatisation : 100-250€\n- Maintenance mensuelle : 20-50€/mois\n\nRéponds toujours en français, de façon chaleureuse, concise (2-4 phrases maximum) et professionnelle.`;
+
+  const translations = {
+  "Fermer": "Close",
+  "Demande de devis": "Quote request",
+  "Parlons de votre projet": "Let's discuss your project",
+  "Réponse sous 48h, devis gratuit et sans engagement.": "We’ll reply within 48 hours. Free quote, no obligation.",
+  "Nom": "Name",
+  "Jean Dupont": "Alex Morgan",
+  "Email": "Email",
+  "jean@entreprise.fr": "alex@company.com",
+  "Service souhaité": "Service needed",
+  "Sélectionner un service...": "Select a service...",
+  "Bot FAQ — 100–200€": "FAQ bot — €100–€200",
+  "Bot avec IA — 250–450€": "AI-powered bot — €250–€450",
+  "Automatisation Python — 100–250€": "Python automation — €100–€250",
+  "Maintenance mensuelle — 20–50€/mois": "Monthly maintenance — €20–€50/month",
+  "Autre / Je ne sais pas encore": "Other / I’m not sure yet",
+  "Décrivez votre besoin": "Describe what you need",
+  "Ex : Je veux un bot Telegram qui répond aux questions de mes clients sur mes horaires et mes services...": "E.g. I need a Telegram bot to answer customers’ questions about our hours and services...",
+  "Envoyer ma demande →": "Send my request →",
+  "Demande envoyée !": "Request sent!",
+  "On vous recontacte sous 48h avec une proposition sur mesure.": "We’ll get back to you within 48 hours with a tailored proposal.",
+  "Services": "Services",
+  "Méthode": "How it works",
+  "Tarifs": "Pricing",
+  "Parler de votre projet": "Discuss your project",
+  "Disponible pour de nouveaux projets": "Available for new projects",
+  "On automatise les ": "We automate ",
+  "tâches répétitives": "repetitive tasks",
+  " de votre business.": " in your business.",
+  "NeuronX conçoit des bots Telegram et des scripts Python sur mesure pour les PME et indépendants : notifications, réponses automatiques, gestion de données. Moins de temps perdu, plus de temps pour votre activité.": "NeuronX builds custom Telegram bots and Python scripts for small businesses and independent professionals: notifications, automated replies, and data management. Spend less time on repetitive work and more time growing your business.",
+  "Demander un devis": "Request a quote",
+  "Voir les services": "View services",
+  "telegram — NeuronX Assistant": "telegram — NeuronX Assistant",
+  "Salut ! Je suis NeuronX Assistant. Pose-moi une question 🤖": "Hi! I’m NeuronX Assistant. Ask me a question 🤖",
+  "vous": "you",
+  "Préviens-moi quand un nouveau client remplit le formulaire": "Notify me when a new client submits the form",
+  "C'est noté. Je t'envoie une notification ici dès qu'une réponse arrive.": "Got it. I’ll notify you here when a new response comes in.",
+  "Trois façons de vous faire gagner du temps": "Three ways to save you time",
+  "Chaque solution est construite sur mesure à partir de vos outils et de vos process actuels — pas de logiciel standard à réapprendre.": "Each solution is tailored to your current tools and processes — no off-the-shelf software to learn.",
+  "Bots Telegram": "Telegram bots",
+  "Un assistant qui répond à vos clients, prend des commandes ou envoie des rappels, directement dans Telegram — disponible 24h/24.": "An assistant that answers customers, takes orders, or sends reminders directly in Telegram — available 24/7.",
+  "Sur mesure": "Custom-built",
+  "Scripts d'automatisation": "Automation scripts",
+  "Tri de fichiers, export de données, envoi d'emails programmés : on automatise les tâches manuelles qui vous prennent un temps précieux chaque semaine.": "File sorting, data exports, scheduled emails: we automate manual tasks that take up valuable time every week.",
+  "Python": "Python",
+  "Maintenance & suivi": "Maintenance & support",
+  "Une fois en place, on ajuste, on corrige et on fait évoluer votre outil au fil de vos besoins — sans repartir de zéro.": "Once it’s in place, we refine, fix, and improve your tool as your needs change — without starting from scratch.",
+  "Continu": "Ongoing",
+  "Comment se déroule un projet": "How a project works",
+  "Quatre étapes simples, du premier message jusqu'à la mise en service.": "Four simple steps, from your first message to launch.",
+  "On clarifie le besoin": "We clarify your needs",
+  "Un échange rapide pour comprendre votre tâche la plus chronophage et ce que devrait faire l'outil au quotidien.": "A quick conversation to understand your most time-consuming task and what the tool should do each day.",
+  "Proposition & devis": "Proposal & quote",
+  "Vous recevez un périmètre clair, un prix fixe et un délai de réalisation — sans surprise par la suite.": "You’ll receive a clear scope, a fixed price, and a delivery timeline — no surprises later.",
+  "Développement": "Development",
+  "On construit et on teste l'outil avec des points d'étape réguliers, pour ajuster en cours de route si besoin.": "We build and test the tool, with regular check-ins so we can adjust as needed.",
+  "Mise en service & suivi": "Launch & ongoing support",
+  "L'outil est déployé et opérationnel. On reste disponible pour les ajustements et la maintenance.": "Your tool is live and ready to use. We’re here for adjustments and maintenance.",
+  "Des prix clairs, adaptés à votre besoin": "Clear pricing, tailored to your needs",
+  "Chaque projet est différent : ces fourchettes donnent un ordre d'idée, le devis final dépend du périmètre exact.": "Every project is different. These ranges are a guide; your final quote depends on the exact scope.",
+  "Bot FAQ": "FAQ bot",
+  "Réponses automatiques aux questions fréquentes": "Automatic answers to frequently asked questions",
+  "Horaires, services, infos pratiques": "Hours, services, and practical information",
+  "Mise en place sur Telegram": "Set up on Telegram",
+  "En discuter": "Discuss your project",
+  "Bot avec IA": "AI-powered bot",
+  "Réponses intelligentes et personnalisées": "Intelligent, personalized replies",
+  "Connaissance de vos produits et services": "Knowledge of your products and services",
+  "Ton et personnalité adaptés à votre marque": "Tone and personality tailored to your brand",
+  "1 mois de support inclus": "1 month of support included",
+  "Automatisation": "Automation",
+  "Scripts d'export ou de tri de données": "Data export or sorting scripts",
+  "Emails ou notifications programmées": "Scheduled emails or notifications",
+  "Connexion à vos outils existants": "Connects to your existing tools",
+  "Une tâche répétitive vous fait perdre du temps ?": "A repetitive task taking up too much of your time?",
+  "Décrivez-nous votre besoin, on vous propose une solution simple et un prix clair sous 48h.": "Tell us what you need. We’ll suggest a simple solution and a clear quote within 48 hours.",
+  "Notre Instagram": "Our Instagram",
+  "© 2026 NeuronX — Automatisation Python & bots Telegram.": "© 2026 NeuronX — Python automation & Telegram bots.",
+  "Ouvrir le chat": "Open chat",
+  "répond en quelques secondes": "replies in seconds",
+  "Salut 👋 Une question sur nos services, nos tarifs ou un projet en tête ? Demande-moi !": "Hi 👋 Questions about our services, pricing, or a project in mind? Ask me!",
+  "Écris ton message...": "Type your message...",
+  "Votre message": "Your message",
+  "Envoyer": "Send",
+  "Envoi en cours...": "Sending...",
+  "NeuronX Assistant écrit...": "NeuronX Assistant is typing...",
+  "Désolé, problème technique. Contactez-nous directement sur Telegram.": "Sorry, the assistant is temporarily unavailable. Please contact us on Telegram.",
+  "Votre demande n'a pas pu être envoyée. Réessayez ou contactez-nous sur Telegram.": "We couldn’t send your request. Please try again or contact us on Telegram."
+};
+  const reverseTranslations = Object.fromEntries(Object.entries(translations).map(([fr, en]) => [en, fr]));
+  let currentLanguage = 'fr';
+
+  function translateValue(value, language) {
+    const dictionary = language === 'en' ? translations : reverseTranslations;
+    return dictionary[value] || value;
+  }
+
+  function applyLanguage(language) {
+    currentLanguage = language;
+    document.documentElement.lang = language;
+    document.body.dataset.language = language;
+    document.title = language === 'en'
+      ? 'NeuronX — Python Automation & Telegram Bots'
+      : 'NeuronX — Automatisation Python & Bots Telegram';
+
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    let node;
+    while ((node = walker.nextNode())) {
+      const parent = node.parentElement;
+      if (!parent || parent.closest('script, style')) continue;
+      const original = node.nodeValue;
+      const trimmed = original.trim();
+      const translated = translateValue(trimmed, language);
+      if (translated !== trimmed) {
+        const leading = original.match(/^\s*/)?.[0] || '';
+        const trailing = original.match(/\s*$/)?.[0] || '';
+        node.nodeValue = leading + translated + trailing;
+      }
+    }
+
+    document.querySelectorAll('[placeholder], [aria-label]').forEach(element => {
+      ['placeholder', 'aria-label'].forEach(attribute => {
+        if (element.hasAttribute(attribute)) {
+          const value = element.getAttribute(attribute);
+          element.setAttribute(attribute, translateValue(value, language));
+        }
+      });
+    });
+
+    document.querySelectorAll('[data-language-option]').forEach(button => {
+      button.setAttribute('aria-pressed', String(button.dataset.languageOption === language));
+    });
+    const languageGroup = document.querySelector('.language-switch');
+    if (languageGroup) languageGroup.setAttribute('aria-label', language === 'en' ? 'Choose language' : 'Choisir la langue');
+  }
+
+  function setLanguage(language, savePreference = true) {
+    if (!['fr', 'en'].includes(language)) return;
+    applyLanguage(language);
+    if (savePreference) {
+      try { localStorage.setItem('neuronx-language', language); } catch (error) {}
+    }
+  }
+
+  function initializeLanguageSwitcher() {
+    document.querySelectorAll('[data-language-option]').forEach(button => {
+      button.addEventListener('click', () => setLanguage(button.dataset.languageOption));
+    });
+    const requestedLanguage = new URLSearchParams(window.location.search).get('lang');
+    let savedLanguage = null;
+    try { savedLanguage = localStorage.getItem('neuronx-language'); } catch (error) {}
+    const initialLanguage = ['fr', 'en'].includes(requestedLanguage)
+      ? requestedLanguage
+      : ['fr', 'en'].includes(savedLanguage)
+        ? savedLanguage
+        : (navigator.language || '').toLowerCase().startsWith('en') ? 'en' : 'fr';
+    setLanguage(initialLanguage, false);
+  }
+
 
   setTimeout(() => { document.getElementById('tl1').classList.add('show'); }, 800);
   setTimeout(() => { document.getElementById('tl2').classList.add('show'); }, 1600);
@@ -426,6 +600,7 @@
   const modalClose = document.getElementById('modalClose');
   const modalForm = document.getElementById('modalForm');
   const modalSuccess = document.getElementById('modalSuccess');
+  const modalError = document.getElementById('modalError');
   const devisSubmit = document.getElementById('devisSubmit');
 
   function openModal() { overlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
@@ -442,33 +617,37 @@
     const service = document.getElementById('devisService').value;
     const message = document.getElementById('devisMessage').value.trim();
     if (!nom || !email) { document.getElementById('devisNom').focus(); return; }
+    modalError.style.display = 'none';
+    modalError.textContent = '';
     devisSubmit.disabled = true;
-    devisSubmit.textContent = 'Envoi en cours...';
+    devisSubmit.textContent = currentLanguage === 'en' ? 'Sending...' : 'Envoi en cours...';
     try {
-     const formData = new FormData();
-formData.append('nom', nom);
-formData.append('email', email);
-formData.append('service', service);
-formData.append('message', message);
-
-await fetch(N8N_WEBHOOK, {
-  method: 'POST',
-  body: formData,
-  mode: 'no-cors'
-});
-    } catch(e) {}
-    modalForm.classList.add('hide');
-    modalSuccess.classList.add('show');
-    setTimeout(() => {
-      closeModal();
+      const response = await fetch('/api/quote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: nom, email, service, message })
+      });
+      if (!response.ok) throw new Error('Quote request failed');
+      modalForm.classList.add('hide');
+      modalSuccess.classList.add('show');
       setTimeout(() => {
-        modalForm.classList.remove('hide');
-        modalSuccess.classList.remove('show');
-        devisSubmit.disabled = false;
-        devisSubmit.textContent = 'Envoyer ma demande →';
-        ['devisNom','devisEmail','devisService','devisMessage'].forEach(id => document.getElementById(id).value = '');
-      }, 400);
-    }, 2800);
+        closeModal();
+        setTimeout(() => {
+          modalForm.classList.remove('hide');
+          modalSuccess.classList.remove('show');
+          devisSubmit.disabled = false;
+          devisSubmit.textContent = currentLanguage === 'en' ? 'Send my request →' : 'Envoyer ma demande →';
+          ['devisNom','devisEmail','devisService','devisMessage'].forEach(id => document.getElementById(id).value = '');
+        }, 400);
+      }, 2800);
+    } catch (error) {
+      modalError.textContent = currentLanguage === 'en'
+        ? 'We couldn’t send your request. Please try again or contact us on Telegram.'
+        : 'Votre demande n'a pas pu être envoyée. Réessayez ou contactez-nous sur Telegram.';
+      modalError.style.display = 'block';
+      devisSubmit.disabled = false;
+      devisSubmit.textContent = currentLanguage === 'en' ? 'Send my request →' : 'Envoyer ma demande →';
+    }
   });
 
   // CHAT
@@ -503,25 +682,38 @@ await fetch(N8N_WEBHOOK, {
     sendBtn.disabled = true;
     const typingDiv = document.createElement('div');
     typingDiv.className = 'msg typing';
-    typingDiv.textContent = 'NeuronX Assistant écrit...';
+    typingDiv.textContent = currentLanguage === 'en' ? 'NeuronX Assistant is typing...' : 'NeuronX Assistant écrit...';
     messages.appendChild(typingDiv);
     messages.scrollTop = messages.scrollHeight;
     try {
-      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      const response = await fetch('/api/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + GROQ_API_KEY },
-        body: JSON.stringify({ model: 'llama-3.3-70b-versatile', messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...history], max_tokens: 300 })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ language: currentLanguage, messages: history })
       });
       const data = await response.json();
       typingDiv.remove();
-      if (data.error) { addMessage("Désolé, problème technique. Contactez-nous directement sur Telegram.", 'bot'); }
-      else { const reply = data.choices[0].message.content; addMessage(reply, 'bot'); history.push({ role: 'assistant', content: reply }); }
-    } catch { typingDiv.remove(); addMessage("Désolé, problème technique. Contactez-nous directement sur Telegram.", 'bot'); }
+      if (!response.ok || data.error || !data.reply) {
+        addMessage(currentLanguage === 'en'
+          ? "Sorry, the assistant is temporarily unavailable. Please contact us on Telegram."
+          : "Désolé, problème technique. Contactez-nous directement sur Telegram.", 'bot');
+      } else {
+        const reply = data.reply;
+        addMessage(reply, 'bot');
+        history.push({ role: 'assistant', content: reply });
+      }
+    } catch {
+      typingDiv.remove();
+      addMessage(currentLanguage === 'en'
+        ? "Sorry, the assistant is temporarily unavailable. Please contact us on Telegram."
+        : "Désolé, problème technique. Contactez-nous directement sur Telegram.", 'bot');
+    }
     sendBtn.disabled = false;
   }
 
   sendBtn.addEventListener('click', sendMessage);
   input.addEventListener('keydown', e => { if (e.key === 'Enter') sendMessage(); });
+  initializeLanguageSwitcher();
 </script>
 </body>
 </html>
