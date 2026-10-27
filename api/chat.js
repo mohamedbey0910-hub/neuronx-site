@@ -45,9 +45,9 @@ Réponds en français, de façon chaleureuse, concise (2–4 phrases maximum) et
         'Authorization': 'Bearer ' + apiKey
       },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model: 'openai/gpt-oss-20b',
         messages: [{ role: 'system', content: systemPrompt }, ...messages],
-        max_tokens: 300
+        max_completion_tokens: 300
       })
     });
 
