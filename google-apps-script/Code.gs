@@ -55,6 +55,10 @@ function doPost(e) {
   }
 }
 
+function authorizeEmail() {
+  MailApp.getRemainingDailyQuota();
+}
+
 function jsonResponse(value) {
   return ContentService
     .createTextOutput(JSON.stringify(value))
